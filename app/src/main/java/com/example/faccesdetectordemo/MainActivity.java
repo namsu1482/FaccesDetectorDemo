@@ -12,6 +12,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     // 링크 https://developers.google.com/vision/android/face-tracker-tutorial
+    // https://developers.google.com/ml-kit/vision/face-detection/android
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
