@@ -84,18 +84,25 @@ public class FaceAnalyzer {
 
         int faceNo = 0;
         for (Face face : faces) {
-            List<FaceContour> contours = face.getAllContours();
-            Log.i(TAG, String.format("Face [%d] contour count : %d", faceNo, contours.size()));
-
-            for (FaceContour contour : contours) {
-                Path path = new Path();
-                path.moveTo(contour.getPoints().get(0).x, contour.getPoints().get(0).y);
-                for (PointF pointF : contour.getPoints()) {
-                    Log.i(TAG, String.format("[face %d] contour point: %s", faceNo, pointF));
-                    path.lineTo(pointF.x, pointF.y);
-                    canvas.drawPath(path, paint);
-                }
+            List<FaceLandmark> landmarks = face.getAllLandmarks();
+            Path path = new Path();
+            path.moveTo(face.getLandmark(0).getPosition().x, face.getLandmark(0).getPosition().y);
+            for (FaceLandmark faceLandmark : landmarks) {
+                path.lineTo(faceLandmark.getPosition().x, faceLandmark.getPosition().y);
+                canvas.drawPath(path, paint);
             }
+//            List<FaceContour> contours = face.getAllContours();
+//            Log.i(TAG, String.format("Face [%d] landmark count : %d", faceNo, face.getAllLandmarks().size()));
+
+//            for (FaceContour contour : contours) {
+//                Path path = new Path();
+//                path.moveTo(contour.getPoints().get(0).x, contour.getPoints().get(0).y);
+//                for (PointF pointF : contour.getPoints()) {
+//                    Log.i(TAG, String.format("[face %d] contour point: %s", faceNo, pointF));
+//                    path.lineTo(pointF.x, pointF.y);
+//                    canvas.drawPath(path, paint);
+//                }
+//            }
 
 //            Rect bounds = face.getBoundingBox();
 //            float rotY = face.getHeadEulerAngleY();  // Head is rotated to the right rotY degrees
