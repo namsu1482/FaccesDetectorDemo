@@ -14,10 +14,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
-import com.google.mlkit.vision.common.InputImage;
-import com.google.mlkit.vision.face.FaceDetection;
-import com.google.mlkit.vision.face.FaceDetector;
-import com.google.mlkit.vision.face.FaceDetectorOptions;
 
 public class MainActivity extends AppCompatActivity {
     Context mContext;
@@ -26,8 +22,6 @@ public class MainActivity extends AppCompatActivity {
     TextView mTvFaceCount;
     ImageView mImageFaces;
 
-    // 링크 https://developers.google.com/vision/android/face-tracker-tutorial
-    // https://developers.google.com/ml-kit/vision/face-detection/android
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,12 +32,20 @@ public class MainActivity extends AppCompatActivity {
 
         Glide.with(mContext)
                 .asBitmap()
-                .load("https://museum.wa.gov.au/sites/default/files/imagecache/wam_v2_page_full/new-museum-wafaces-banner-v2.jpg")
+                .load("https://cdn.vox-cdn.com/thumbor/CMJs1AJyAmf27RUd2UI5WBSZpy4=/0x0:3049x2048/920x613/filters:focal(1333x1562:1819x2048):format(webp)/cdn.vox-cdn.com/uploads/chorus_image/image/63058104/fake_ai_faces.0.png")
                 .into(new CustomTarget<Bitmap>() {
                     @Override
                     public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
                         bitmap = resource;
                         mImageFaces.setImageBitmap(bitmap);
+
+                        FaceAnalyzer faceAnalyzer = new FaceAnalyzer();
+                        faceAnalyzer.analyze(bitmap, new FaceAnalyzer.mappingImageListener() {
+                            @Override
+                            public void onComplete(Bitmap bitmap) {
+                                mImageFaces.setImageBitmap(bitmap);
+                            }
+                        });
                     }
 
                     @Override
@@ -60,18 +62,4 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void initFaceDetector() {
-        // High-accuracy landmark detection and face classification
-        FaceDetectorOptions highAccuracyOpts =
-                new FaceDetectorOptions.Builder()
-                        .setPerformanceMode(FaceDetectorOptions.PERFORMANCE_MODE_ACCURATE)
-                        .setLandmarkMode(FaceDetectorOptions.LANDMARK_MODE_ALL)
-                        .setClassificationMode(FaceDetectorOptions.CLASSIFICATION_MODE_ALL)
-                        .build();
-
-        FaceDetector faceDetector = FaceDetection.getClient(highAccuracyOpts);
-
-        InputImage inputImage = InputImage.fromBitmap(bitmap,0);
-
-    }
 }
