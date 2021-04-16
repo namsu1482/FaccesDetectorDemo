@@ -89,6 +89,7 @@ public class FaceAnalyzer {
             path.moveTo(face.getLandmark(0).getPosition().x, face.getLandmark(0).getPosition().y);
             for (FaceLandmark faceLandmark : landmarks) {
                 path.lineTo(faceLandmark.getPosition().x, faceLandmark.getPosition().y);
+                Log.i(TAG,String.format("Face Count [%d] landmark pointF [ x:%s y:%s]",faceNo,faceLandmark.getPosition().x, faceLandmark.getPosition().y));
                 canvas.drawPath(path, paint);
             }
 //            List<FaceContour> contours = face.getAllContours();
