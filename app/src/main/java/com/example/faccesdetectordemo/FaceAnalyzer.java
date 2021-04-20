@@ -5,19 +5,14 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.graphics.PointF;
-import android.graphics.Rect;
-import android.graphics.drawable.BitmapDrawable;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.vision.face.Contour;
 import com.google.mlkit.vision.common.InputImage;
 import com.google.mlkit.vision.face.Face;
-import com.google.mlkit.vision.face.FaceContour;
 import com.google.mlkit.vision.face.FaceDetection;
 import com.google.mlkit.vision.face.FaceDetector;
 import com.google.mlkit.vision.face.FaceDetectorOptions;
@@ -30,11 +25,12 @@ public class FaceAnalyzer {
     Bitmap facesImage;
 
     Bitmap mappedImage;
+    List<Face> list;
 
     private FaceDetector faceDetector;
 
     interface mappingImageListener {
-        void onComplete(Bitmap bitmap);
+        void onComplete();
     }
 
     //https://developers.google.com/ml-kit/vision/face-detection/android?hl=ko#4.-process-the-image
@@ -61,9 +57,10 @@ public class FaceAnalyzer {
                 .addOnSuccessListener(new OnSuccessListener<List<Face>>() {
                     @Override
                     public void onSuccess(@NonNull List<Face> faces) {
+                        list = faces;
                         Log.i(TAG, "Face Detect Success");
                         Log.i(TAG, String.format("Face Count : %d", faces.size()));
-                        mappingImageListener.onComplete(analyze(faces));
+                        mappingImageListener.onComplete();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -76,7 +73,7 @@ public class FaceAnalyzer {
 
     }
 
-    private Bitmap analyze(List<Face> faces) {
+    private Bitmap analyzeFaces(List<Face> faces) {
         mappedImage = facesImage.copy(Bitmap.Config.ARGB_8888, true);
         Canvas canvas = new Canvas(mappedImage);
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -89,7 +86,7 @@ public class FaceAnalyzer {
             path.moveTo(face.getLandmark(0).getPosition().x, face.getLandmark(0).getPosition().y);
             for (FaceLandmark faceLandmark : landmarks) {
                 path.lineTo(faceLandmark.getPosition().x, faceLandmark.getPosition().y);
-                Log.i(TAG,String.format("Face Count [%d] landmark pointF [ x:%s y:%s]",faceNo,faceLandmark.getPosition().x, faceLandmark.getPosition().y));
+                Log.i(TAG, String.format("Face Count [%d] landmark pointF [ x:%s y:%s]", faceNo, faceLandmark.getPosition().x, faceLandmark.getPosition().y));
                 canvas.drawPath(path, paint);
             }
 //            List<FaceContour> contours = face.getAllContours();
@@ -145,6 +142,7 @@ public class FaceAnalyzer {
     }
 
     public Bitmap getMappedImage() {
+        analyzeFaces(list);
         return mappedImage;
     }
 
