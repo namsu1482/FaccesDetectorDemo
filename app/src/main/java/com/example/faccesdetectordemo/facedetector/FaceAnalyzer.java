@@ -1,4 +1,4 @@
-package com.example.faccesdetectordemo;
+package com.example.faccesdetectordemo.facedetector;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -29,24 +29,23 @@ public class FaceAnalyzer {
 
     private FaceDetector faceDetector;
 
-    interface mappingImageListener {
+    public interface mappingImageListener {
         void onComplete();
     }
-
     //https://developers.google.com/ml-kit/vision/face-detection/android?hl=ko#4.-process-the-image
-
 
     private void init() {
         FaceDetectorOptions highAccuracyOpts =
                 new FaceDetectorOptions.Builder()
+                        // performance setting (default:Fast)
                         .setPerformanceMode(FaceDetectorOptions.PERFORMANCE_MODE_ACCURATE)
+                        // landmark recognize(ex. nose,ear,cheek,mouse)
                         .setLandmarkMode(FaceDetectorOptions.LANDMARK_MODE_ALL)
                         .setClassificationMode(FaceDetectorOptions.CLASSIFICATION_MODE_ALL)
                         .setContourMode(FaceDetectorOptions.CONTOUR_MODE_ALL)
                         .build();
 
         faceDetector = FaceDetection.getClient(highAccuracyOpts);
-
     }
 
     public void analyze(Bitmap bitmap, final mappingImageListener mappingImageListener) {
@@ -70,9 +69,9 @@ public class FaceAnalyzer {
 
                     }
                 });
-
     }
 
+    // 인식된 이미지에 point mapping
     private Bitmap analyzeFaces(List<Face> faces) {
         mappedImage = facesImage.copy(Bitmap.Config.ARGB_8888, true);
         Canvas canvas = new Canvas(mappedImage);
@@ -136,14 +135,8 @@ public class FaceAnalyzer {
         return mappedImage;
     }
 
-    private void mapContoursToBitmap() {
-
-
-    }
-
     public Bitmap getMappedImage() {
         analyzeFaces(list);
         return mappedImage;
     }
-
 }

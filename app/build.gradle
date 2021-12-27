@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.faccesdetectordemo"
-        minSdkVersion 19
+        minSdkVersion 24
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -37,4 +37,9 @@ dependencies {
     implementation 'com.google.android.gms:play-services-mlkit-face-detection:16.1.5'
     implementation 'com.google.android.material:material:1.4.0-alpha02'
 
+    implementation 'org.tensorflow:tensorflow-lite:2.4.0'
+    implementation 'org.tensorflow:tensorflow-lite-gpu:2.4.0'
+    implementation 'org.tensorflow:tensorflow-lite-support:0.1.0-rc1'
+    implementation 'androidx.camera:camera-core:1.1.0-alpha03'
+    implementation 'androidx.camera:camera-core:1.1.0-alpha03'
 }
