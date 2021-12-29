@@ -41,8 +41,11 @@ public class FaceAnalyzer {
                         .setPerformanceMode(FaceDetectorOptions.PERFORMANCE_MODE_ACCURATE)
                         // landmark recognize(ex. nose,ear,cheek,mouse)
                         .setLandmarkMode(FaceDetectorOptions.LANDMARK_MODE_ALL)
+                        //
                         .setClassificationMode(FaceDetectorOptions.CLASSIFICATION_MODE_ALL)
+
                         .setContourMode(FaceDetectorOptions.CONTOUR_MODE_ALL)
+
                         .build();
 
         faceDetector = FaceDetection.getClient(highAccuracyOpts);
@@ -52,6 +55,7 @@ public class FaceAnalyzer {
         init();
         facesImage = bitmap;
         final InputImage inputImage = InputImage.fromBitmap(facesImage, 0);
+
         faceDetector.process(inputImage)
                 .addOnSuccessListener(new OnSuccessListener<List<Face>>() {
                     @Override
