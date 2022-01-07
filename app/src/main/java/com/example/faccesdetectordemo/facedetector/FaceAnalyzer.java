@@ -69,7 +69,6 @@ public class FaceAnalyzer {
                     @Override
                     public void onSuccess(@NonNull List<Face> faces) {
                         list = faces;
-                        Log.i(TAG, "Face Detect Success");
                         Log.i(TAG, String.format("Face Count : %d", faces.size()));
                         mappingImageListener.onComplete();
                     }
