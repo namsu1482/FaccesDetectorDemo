@@ -21,6 +21,13 @@ import com.google.mlkit.vision.face.FaceLandmark;
 import java.util.List;
 
 public class FaceAnalyzer {
+    //TODO
+    /*
+    이미지에서 사람 인식 분류 -> faceAnalyzer 사용
+    만약 인식이 안될시 초 해상도 이미지 작업
+
+    tensorFlow 참조 필요
+     */
     private static final String TAG = "FaceAnalyzer";
     Bitmap facesImage;
 
@@ -53,6 +60,7 @@ public class FaceAnalyzer {
 
     public void analyze(Bitmap bitmap, final mappingImageListener mappingImageListener) {
         init();
+
         facesImage = bitmap;
         final InputImage inputImage = InputImage.fromBitmap(facesImage, 0);
 

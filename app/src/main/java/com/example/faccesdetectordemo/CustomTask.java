@@ -7,6 +7,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 public class CustomTask {
+
     OnCustomTaskListener onCustomTaskListener;
 
     public interface OnCustomTaskListener {
